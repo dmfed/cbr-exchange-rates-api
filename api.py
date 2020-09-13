@@ -120,3 +120,6 @@ class ApiDatesConverter:
         except ValueError:
             raise ValueError("Can only accept date as string in form '%d/%m/%Y', e.g. '01/09/2020'")
         self.datetime = date
+
+
+__all__ = [Currency]
