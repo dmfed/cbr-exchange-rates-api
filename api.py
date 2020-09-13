@@ -63,9 +63,10 @@ class ExchangeRateFetcher:
 
     def fetch_rate_for_range_of_dates(self, start_date: str, end_date: str) -> dict:
         '''
-        Accepts two dates in form "dd/mm/yyyy" and returns dictionary {datetime.datetime: float}
-        of exchange rates (RUB/currency) at relevant dates. The specified dates are both included
-        in the output.        
+        Accepts two dates in form "dd/mm/yyyy" and returns dictionary
+        {datetime.datetime: float} of exchange rates (RUB/currency) at
+        relevant dates. The specified dates are both included
+        in the output.
         '''
         params = {endpoints.API_REQUEST_DATE_RANGE_BEGIN: ApiDatesConverter(start_date).to_string(),
                   endpoints.API_REQUEST_DATE_RANGE_END: ApiDatesConverter(end_date).to_string(),
@@ -76,6 +77,9 @@ class ExchangeRateFetcher:
         return dict(zip(dates, values))
     
     def api_response_to_datetime(self, datestr: str) -> datetime.datetime:
+        '''
+        CBR API acceps date as dd/mm/yyy but returns dd.mm.yyyy
+        '''
         d, m, y = (int(n) for n in datestr.split("."))
         return datetime.datetime(y, m, d)
     
