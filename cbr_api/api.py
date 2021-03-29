@@ -96,9 +96,6 @@ class ApiDatesConverter:
             self.datestr = date
             self.str_to_datetime()
             self.datetime_to_str() 
-            # ^^^^ this looks odd, but otherwise I'd have to do: 
-            # datestr = "{:02d}/{:02d}/{:02d}".format(*[int(n) for n in date.split("/")])
-            # in order to make date suitable for http request to the api
         elif isinstance(date, datetime.datetime):
             self.datetime = date
             self.datetime_to_str()
@@ -116,9 +113,11 @@ class ApiDatesConverter:
                 
     def str_to_datetime(self):
         try:
+            if self.datestr.find(".") != -1:
+                self.datestr = self.datestr.replace(".", "/")
             date = datetime.datetime.strptime(self.datestr, "%d/%m/%Y")
         except ValueError:
-            raise ValueError("Can only accept date as string in form '%d/%m/%Y', e.g. '01/09/2020'")
+            raise ValueError("Can only accept date as string in form '%d/%m/%Y' or '%d.%m.%Y', e.g. '01/09/2020'")
         self.datetime = date
 
 
